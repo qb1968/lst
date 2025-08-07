@@ -21,20 +21,22 @@ export default function Calendar() {
   const [shows, setShows] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/shows").then((res) => {
-      const parsed = res.data
-        .map((show) => {
-          // Parse ISO date string
-          const parsedDate = parseISO(show.date);
-          if (!isValid(parsedDate)) return null;
-          return {
-            ...show,
-            date: parsedDate,
-          };
-        })
-        .filter(Boolean);
-      setShows(parsed);
-    });
+    axios
+      .get("https://backend-silent-wildflower-3566.fly.dev/shows")
+      .then((res) => {
+        const parsed = res.data
+          .map((show) => {
+            // Parse ISO date string
+            const parsedDate = parseISO(show.date);
+            if (!isValid(parsedDate)) return null;
+            return {
+              ...show,
+              date: parsedDate,
+            };
+          })
+          .filter(Boolean);
+        setShows(parsed);
+      });
   }, []);
 
   const renderHeader = () => (
