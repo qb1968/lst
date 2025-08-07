@@ -114,7 +114,7 @@ export default function Calendar() {
             {dayShows.map((show) => (
               <div key={show.id} className="mb-1">
                 <img
-                  src={`http://localhost:5000${show.image}`}
+                  src={`https://backend-silent-wildflower-3566.fly.dev${show.image}`}
                   alt={show.title}
                   className="w-full h-16 object-contain rounded mb-1"
                 />
