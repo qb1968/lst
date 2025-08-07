@@ -26,7 +26,6 @@ export default function Calendar() {
       .then((res) => {
         const parsed = res.data
           .map((show) => {
-            // Parse ISO date string
             const parsedDate = parseISO(show.date);
             if (!isValid(parsedDate)) return null;
             return {
@@ -73,13 +72,11 @@ export default function Calendar() {
   };
 
   const formatTime = (timeStr) => {
-    // Try parsing 24-hour time like "19:00"
-    // If already in 12-hr (with AM/PM), parsing will fail and we fallback
     try {
       const parsedTime = parse(timeStr, "HH:mm", new Date());
       if (isValid(parsedTime)) return format(parsedTime, "h:mm a");
     } catch {}
-    return timeStr; // fallback: return original string
+    return timeStr;
   };
 
   const renderCells = () => {
@@ -99,7 +96,7 @@ export default function Calendar() {
 
         days.push(
           <div
-            key={day}
+            key={day.toString()}
             className={`p-2 border h-36 overflow-auto text-xs rounded ${
               !isSameMonth(day, monthStart) ? "opacity-40" : ""
             } ${
@@ -112,7 +109,7 @@ export default function Calendar() {
               {format(day, "d")}
             </div>
             {dayShows.map((show) => (
-              <div key={show.id} className="mb-1">
+              <div key={show._id} className="mb-1">
                 <img
                   src={`https://backend-silent-wildflower-3566.fly.dev${show.image}`}
                   alt={show.title}
@@ -137,7 +134,7 @@ export default function Calendar() {
       }
 
       rows.push(
-        <div key={day} className="grid grid-cols-7 gap-2 mb-2">
+        <div key={day.toString()} className="grid grid-cols-7 gap-2 mb-2">
           {days}
         </div>
       );
@@ -149,9 +146,20 @@ export default function Calendar() {
 
   return (
     <section className="p-6 max-w-6xl mx-auto text-white bg-black min-h-screen">
-      {renderHeader()}
-      {renderDays()}
-      {renderCells()}
+      {/* Hide calendar on mobile */}
+      <div className="hidden md:block">
+        {renderHeader()}
+        {renderDays()}
+        {renderCells()}
+      </div>
+
+      {/* Show message on mobile */}
+      <div className="block md:hidden text-center text-gray-400 p-10">
+        <p>
+          The calendar is not available on mobile devices. Please visit on a
+          larger screen.
+        </p>
+      </div>
     </section>
   );
 }

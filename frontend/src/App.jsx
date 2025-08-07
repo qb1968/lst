@@ -1,4 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
+
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -11,40 +14,102 @@ import Gallery from "./pages/Gallery";
 import Alliance from "./pages/Alliance";
 
 export default function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <Router>
-      <header className="bg-black text-white p-4 flex justify-center items-center">
-        <nav className="space-x-12 text-lg">
-          <Link to="/" className="hover:underline">
-            Home
-          </Link>
-          <Link to="/about" className="hover:underline">
-            About
-          </Link>
-          <Link to="/faqs" className="hover:underline">
-            FAQs/POLICIES
-          </Link>
-          <Link to="/seating-chart" className="hover:underline">
-            Seating Chart
-          </Link>
-          <Link to="/gallery" className="hover:underline">
-            Gallery
-          </Link>
-          <Link to="/alliance" className="hover:underline">
-            Alliance Center
-          </Link>
-          <Link to="/contact" className="hover:underline">
-            Contact
-          </Link>
-          <Link to="/calendar" className="hover:underline">
-            Calendar
-          </Link>
-          {/* <Link to="/admin" className="hover:underline">
-            Admin
-          </Link> */}
-        </nav>
+      {/* Header */}
+      <header className="bg-black text-white p-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          {/* Logo or Brand */}
+          <div className="text-xl font-bold">Liberty Theater</div>
+
+          {/* Hamburger Icon - Mobile */}
+          <button
+            onClick={toggleMenu}
+            className="md:hidden text-white text-2xl"
+            aria-label="Toggle Menu"
+          >
+            {menuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+
+          {/* Nav - Desktop */}
+          <nav className="hidden md:flex space-x-8 text-lg">
+            <Link to="/" className="hover:underline">
+              Home
+            </Link>
+            <Link to="/about" className="hover:underline">
+              About
+            </Link>
+            <Link to="/faqs" className="hover:underline">
+              FAQs/POLICIES
+            </Link>
+            <Link to="/seating-chart" className="hover:underline">
+              Seating Chart
+            </Link>
+            <Link to="/gallery" className="hover:underline">
+              Gallery
+            </Link>
+            <Link to="/alliance" className="hover:underline">
+              Alliance Center
+            </Link>
+            <Link to="/contact" className="hover:underline">
+              Contact
+            </Link>
+            <Link to="/calendar" className="hover:underline">
+              Calendar
+            </Link>
+            {/* <Link to="/admin" className="hover:underline">Admin</Link> */}
+          </nav>
+        </div>
+
+        {/* Nav - Mobile Dropdown */}
+        {menuOpen && (
+          <nav className="md:hidden mt-4 flex flex-col space-y-4 text-lg text-center">
+            <Link to="/" onClick={closeMenu} className="hover:underline">
+              Home
+            </Link>
+            <Link to="/about" onClick={closeMenu} className="hover:underline">
+              About
+            </Link>
+            <Link to="/faqs" onClick={closeMenu} className="hover:underline">
+              FAQs/POLICIES
+            </Link>
+            <Link
+              to="/seating-chart"
+              onClick={closeMenu}
+              className="hover:underline"
+            >
+              Seating Chart
+            </Link>
+            <Link to="/gallery" onClick={closeMenu} className="hover:underline">
+              Gallery
+            </Link>
+            <Link
+              to="/alliance"
+              onClick={closeMenu}
+              className="hover:underline"
+            >
+              Alliance Center
+            </Link>
+            <Link to="/contact" onClick={closeMenu} className="hover:underline">
+              Contact
+            </Link>
+            <Link
+              to="/calendar"
+              onClick={closeMenu}
+              className="hover:underline"
+            >
+              Calendar
+            </Link>
+          </nav>
+        )}
       </header>
 
+      {/* Page Content */}
       <div className="min-h-screen flex flex-col bg-black text-white">
         <div className="flex-grow">
           <Routes>
