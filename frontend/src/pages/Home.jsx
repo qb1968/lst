@@ -8,12 +8,16 @@ export default function Home() {
   const [expandedId, setExpandedId] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/shows").then((res) => {
-      const sorted = res.data.sort(
-        (a, b) => new Date(a.date) - new Date(b.date)
-      );
-      setShows(sorted.slice(0, 60));
-    });
+    axios
+      .get("https://backend-silent-wildflower-3566.fly.dev/shows")
+      .then((res) => {
+        const today = new Date();
+        const upcomingShows = res.data
+          .filter((show) => new Date(show.date) >= today)
+          .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        setShows(upcomingShows.slice(0, 60));
+      });
   }, []);
 
   const toggleExpand = (id) => {
@@ -62,16 +66,16 @@ export default function Home() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
           {shows.map((show) => {
-            const isExpanded = expandedId === show.id;
+            const isExpanded = expandedId === show._id;
 
             return (
               <div
-                key={show.id}
+                key={show._id}
                 className="border border-gray-300 rounded-lg shadow-lg bg-white text-black flex flex-col p-6 space-y-4 transition-all duration-300 hover:shadow-2xl"
               >
                 {!isExpanded && (
                   <img
-                    src={`http://localhost:5000${show.image}`}
+                    src={`https://backend-silent-wildflower-3566.fly.dev${show.image}`}
                     alt={show.title}
                     className="w-full h-80 object-contain rounded-md"
                   />
@@ -89,7 +93,7 @@ export default function Home() {
                 {isExpanded ? (
                   <>
                     <button
-                      onClick={() => toggleExpand(show.id)}
+                      onClick={() => toggleExpand(show._id)}
                       className="text-red-600 text-2xl font-bold self-end"
                       aria-label="Close Info"
                     >
@@ -100,7 +104,7 @@ export default function Home() {
                 ) : (
                   <>
                     <button
-                      onClick={() => toggleExpand(show.id)}
+                      onClick={() => toggleExpand(show._id)}
                       className="text-black font-semibold underline text-center"
                     >
                       More Info

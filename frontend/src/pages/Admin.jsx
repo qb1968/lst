@@ -36,7 +36,9 @@ export default function Admin() {
 
 
   const fetchShows = () => {
-    axios.get("http://localhost:5000/shows").then((res) => setShows(res.data));
+    axios
+      .get("https://backend-silent-wildflower-3566.fly.dev/shows")
+      .then((res) => setShows(res.data));
   };
 
   useEffect(() => {
@@ -63,7 +65,7 @@ export default function Admin() {
     );
     if (imageFile) data.append("image", imageFile);
 
-    const url = `http://localhost:5000/shows${
+    const url = `https://backend-silent-wildflower-3566.fly.dev/shows${
       editingId ? `/${editingId}` : ""
     }`;
     const method = editingId ? axios.put : axios.post;
@@ -92,7 +94,7 @@ export default function Admin() {
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete this show?")) {
       axios
-        .delete(`http://localhost:5000/shows/${id}`)
+        .delete(`https://backend-silent-wildflower-3566.fly.dev/shows/${id}`)
         .then(() => fetchShows());
     }
   };
@@ -187,7 +189,7 @@ export default function Admin() {
             className="border p-4 rounded shadow text-white bg-gray-800"
           >
             <img
-              src={`http://localhost:5000${show.image}`}
+              src={`https://backend-silent-wildflower-3566.fly.dev${show.image}`}
               alt={show.title}
               className="w-full h-72 object-contain rounded mb-2"
             />
