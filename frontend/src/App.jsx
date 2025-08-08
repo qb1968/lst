@@ -12,6 +12,7 @@ import Faqs from "./pages/Faqs";
 import SeatingChart from "./pages/SeatingChart";
 import Gallery from "./pages/Gallery";
 import Alliance from "./pages/Alliance";
+import MassEmailAds from "./components/MassEmailAds";
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -110,7 +111,7 @@ export default function App() {
       </header>
 
       {/* Page Content */}
-      <div className="min-h-screen flex flex-col bg-black text-white">
+      <div className="min-h-screen flex flex-col bg-black text-white textarea-bg-white ">
         <div className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -122,6 +123,7 @@ export default function App() {
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/alliance" element={<Alliance />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/admin/mass-email" element={<MassEmailAds />} />
           </Routes>
         </div>
         <Footer />

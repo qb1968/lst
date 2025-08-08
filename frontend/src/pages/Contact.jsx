@@ -221,7 +221,7 @@ export default function Contact() {
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3224.6325713671235!2d-79.4318392!3d36.078065099999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88532ba26b290b63%3A0x2213e1e9b7e50dca!2sAlliance%20Convention%20Center!5e0!3m2!1sen!2sus!4v1754513973663!5m2!1sen!2sus"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3233.815354942032!2d-79.5702896!3d35.853530899999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x885339d29554241d%3A0xfd6a37b32f7b1c7f!2sLiberty%20Showcase%20Inc.!5e0!3m2!1sen!2sus!4v1754617217974!5m2!1sen!2sus"
             ></iframe>
           </div>
         </div>

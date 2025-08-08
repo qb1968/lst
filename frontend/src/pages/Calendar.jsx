@@ -21,21 +21,19 @@ export default function Calendar() {
   const [shows, setShows] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("https://backend-silent-wildflower-3566.fly.dev/shows")
-      .then((res) => {
-        const parsed = res.data
-          .map((show) => {
-            const parsedDate = parseISO(show.date);
-            if (!isValid(parsedDate)) return null;
-            return {
-              ...show,
-              date: parsedDate,
-            };
-          })
-          .filter(Boolean);
-        setShows(parsed);
-      });
+    axios.get("https://lst-ys3v.onrender.com/shows").then((res) => {
+      const parsed = res.data
+        .map((show) => {
+          const parsedDate = parseISO(show.date);
+          if (!isValid(parsedDate)) return null;
+          return {
+            ...show,
+            date: parsedDate,
+          };
+        })
+        .filter(Boolean);
+      setShows(parsed);
+    });
   }, []);
 
   const renderHeader = () => (
@@ -111,7 +109,7 @@ export default function Calendar() {
             {dayShows.map((show) => (
               <div key={show._id} className="mb-1">
                 <img
-                  src={`https://backend-silent-wildflower-3566.fly.dev${show.image}`}
+                  src={`https://lst-ys3v.onrender.com${show.image}`}
                   alt={show.title}
                   className="w-full h-16 object-contain rounded mb-1"
                 />

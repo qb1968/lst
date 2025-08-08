@@ -6,3 +6,13 @@
 body {
   @apply bg-black ;
 }
+
+@layer base {
+  textarea {
+    @apply text-black;
+  }
+  input {
+    @apply text-black;
+  }
+}
+

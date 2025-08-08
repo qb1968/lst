@@ -1,16 +1,133 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { format } from "date-fns";
 import { FaArrowUp } from "react-icons/fa";
+import EmailEditor from "react-email-editor";
 
-// ...
+// MassEmailAds component (inline here for convenience)
+function MassEmailAds() {
+  const [emailList, setEmailList] = useState("");
+  const [subject, setSubject] = useState("");
+  const [sending, setSending] = useState(false);
+  const [message, setMessage] = useState("");
+  const emailEditorRef = useRef(null);
 
+  // Image upload handler for react-email-editor
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
 
+    try {
+      const response = await fetch(
+        "https://lst-ys3v.onrender.com/upload-image",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
+      const data = await response.json();
 
-const DEFAULT_LOCATION = "101 S Fayetteville St, Liberty NC 27298";
+      if (response.ok && data.url) {
+        return { data: { link: data.url } };
+      } else {
+        throw new Error("Upload failed");
+      }
+    } catch (error) {
+      console.error("Image upload error:", error);
+      return Promise.reject(error);
+    }
+  };
 
-export default function Admin() {
+  const handleSendEmails = () => {
+    setSending(true);
+    setMessage("");
+
+    emailEditorRef.current.editor.exportHtml(async (data) => {
+      const { html } = data;
+
+      const payload = {
+        emails: emailList.split(",").map((e) => e.trim()),
+        subject,
+        body: html,
+      };
+
+      try {
+        const response = await fetch(
+          "https://lst-ys3v.onrender.com/api/send-mass-email",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }
+        );
+
+        if (response.ok) {
+          setMessage("Emails sent successfully!");
+        } else {
+          setMessage("Failed to send emails.");
+        }
+      } catch (error) {
+        setMessage("Error sending emails.");
+      } finally {
+        setSending(false);
+      }
+    });
+  };
+
+  return (
+    <div className="p-6 max-w-5xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Mass Email Ads</h2>
+
+      <label className="block mb-2">
+        Recipient Emails (comma separated)
+        <textarea
+          className="w-full border p-2 rounded"
+          rows={4}
+          value={emailList}
+          onChange={(e) => setEmailList(e.target.value)}
+        />
+      </label>
+
+      <label className="block mb-4">
+        Subject
+        <input
+          className="w-full border p-2 rounded"
+          type="text"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+        />
+      </label>
+
+      <label className="block mb-6 font-semibold">Create Your Flier:</label>
+      <div className="h-[700px] w-full max-w-[900px] mx-auto">
+        <EmailEditor
+          ref={emailEditorRef}
+          tools={{
+            image: {
+              uploadFile: uploadImage,
+            },
+          }}
+        />
+      </div>
+
+      <button
+        onClick={handleSendEmails}
+        disabled={sending}
+        className="mt-6 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+      >
+        {sending ? "Sending..." : "Send Emails"}
+      </button>
+
+      {message && <p className="mt-4">{message}</p>}
+    </div>
+  );
+}
+
+// Your existing Admin component (slightly adapted here)
+function Admin() {
+  const DEFAULT_LOCATION = "101 S Fayetteville St, Liberty NC 27298";
+
   const [shows, setShows] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -22,22 +139,21 @@ export default function Admin() {
   });
   const [useCustomLocation, setUseCustomLocation] = useState(false);
   const [imageFile, setImageFile] = useState(null);
-    const [editingId, setEditingId] = useState(null);
-    const [showScrollButton, setShowScrollButton] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
-    useEffect(() => {
-      const handleScroll = () => {
-        setShowScrollButton(window.scrollY > 300);
-      };
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollButton(window.scrollY > 300);
+    };
 
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const fetchShows = () => {
     axios
-      .get("https://backend-silent-wildflower-3566.fly.dev/shows")
+      .get("https://lst-ys3v.onrender.com/shows")
       .then((res) => setShows(res.data));
   };
 
@@ -65,7 +181,7 @@ export default function Admin() {
     );
     if (imageFile) data.append("image", imageFile);
 
-    const url = `https://backend-silent-wildflower-3566.fly.dev/shows${
+    const url = `https://lst-ys3v.onrender.com/shows${
       editingId ? `/${editingId}` : ""
     }`;
     const method = editingId ? axios.put : axios.post;
@@ -87,14 +203,14 @@ export default function Admin() {
       location: show.location || DEFAULT_LOCATION,
     });
     setUseCustomLocation(show.location !== DEFAULT_LOCATION);
-    setEditingId(show.id);
+    setEditingId(show._id);
     setImageFile(null);
   };
 
   const handleDelete = (id) => {
     if (confirm("Are you sure you want to delete this show?")) {
       axios
-        .delete(`https://backend-silent-wildflower-3566.fly.dev/shows/${id}`)
+        .delete(`https://lst-ys3v.onrender.com/shows/${id}`)
         .then(() => fetchShows());
     }
   };
@@ -189,7 +305,7 @@ export default function Admin() {
             className="border p-4 rounded shadow text-white bg-gray-800"
           >
             <img
-              src={`https://backend-silent-wildflower-3566.fly.dev${show.image}`}
+              src={`https://lst-ys3v.onrender.com${show.image}`}
               alt={show.title}
               className="w-full h-72 object-contain rounded mb-2"
             />
@@ -208,7 +324,7 @@ export default function Admin() {
                 Edit
               </button>
               <button
-                onClick={() => handleDelete(show.id)}
+                onClick={() => handleDelete(show._id)}
                 className="px-2 py-1 text-sm bg-red-600 text-white rounded"
               >
                 Delete
@@ -226,6 +342,46 @@ export default function Admin() {
           <FaArrowUp className="text-lg" />
         </button>
       )}
+    </div>
+  );
+}
+
+// Main AdminTabs component with tabs for Admin and Mass Email
+export default function AdminTabs() {
+  const [activeTab, setActiveTab] = useState("admin");
+
+  return (
+    <div className="max-w-7xl mx-auto p-6">
+      {/* Tabs Navigation */}
+      <div className="flex border-b border-gray-300 mb-6">
+        <button
+          onClick={() => setActiveTab("admin")}
+          className={`py-2 px-6 -mb-px border-b-2 font-medium transition-colors duration-200 ${
+            activeTab === "admin"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-gray-600 hover:text-blue-600"
+          }`}
+        >
+          Admin
+        </button>
+
+        <button
+          onClick={() => setActiveTab("mass-email")}
+          className={`py-2 px-6 -mb-px border-b-2 font-medium transition-colors duration-200 ${
+            activeTab === "mass-email"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-gray-600 hover:text-blue-600"
+          }`}
+        >
+          Mass Email Ads
+        </button>
+      </div>
+
+      {/* Tab Content */}
+      <div>
+        {activeTab === "admin" && <Admin />}
+        {activeTab === "mass-email" && <MassEmailAds />}
+      </div>
     </div>
   );
 }

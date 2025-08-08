@@ -8,16 +8,14 @@ export default function Home() {
   const [expandedId, setExpandedId] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("https://backend-silent-wildflower-3566.fly.dev/shows")
-      .then((res) => {
-        const today = new Date();
-        const upcomingShows = res.data
-          .filter((show) => new Date(show.date) >= today)
-          .sort((a, b) => new Date(a.date) - new Date(b.date));
+    axios.get("https://lst-ys3v.onrender.com/shows").then((res) => {
+      const today = new Date();
+      const upcomingShows = res.data
+        .filter((show) => new Date(show.date) >= today)
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-        setShows(upcomingShows.slice(0, 60));
-      });
+      setShows(upcomingShows.slice(0, 60));
+    });
   }, []);
 
   const toggleExpand = (id) => {
@@ -25,7 +23,7 @@ export default function Home() {
   };
 
   return (
-    <section className="bg-black text-white p-8">
+    <section className="bg-black  p-8">
       {/* Hero Section */}
       <div className="text-center mb-24 h-[80vh] flex flex-col justify-center items-center space-y-6">
         <img
@@ -56,13 +54,23 @@ export default function Home() {
             Click Here <br /> To View <br /> Reidsville Showcase Theater Shows
           </p>
         </div>
+        <div className="text-center mb-10">
+          <Link
+            to="https://ci.ovationtix.com/36127/store/products"
+            className="inline-flex items-center space-x-2 bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-lg shadow-md transition"
+          >
+            <span role="img" aria-label="gift" className="text-2xl">
+              🎁
+            </span>
+            <span>Gift Cards</span>
+          </Link>
+        </div>
       </div>
+      {/* Gift Card Link */}
 
       {/* Shows Section */}
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-5xl font-bold mb-12 text-center">
-          Coming Up in 2025
-        </h2>
+        <h2 className="text-6xl font-bold mb-12 text-center">Upcoming Shows</h2>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
           {shows.map((show) => {
@@ -71,11 +79,11 @@ export default function Home() {
             return (
               <div
                 key={show._id}
-                className="border border-gray-300 rounded-lg shadow-lg bg-white text-black flex flex-col p-6 space-y-4 transition-all duration-300 hover:shadow-2xl"
+                className="border border-gray-300 rounded-lg shadow-lg bg-white/90  text-black flex flex-col p-6 space-y-4 transition-all duration-300 hover:shadow-2xl"
               >
                 {!isExpanded && (
                   <img
-                    src={`https://backend-silent-wildflower-3566.fly.dev${show.image}`}
+                    src={`https://lst-ys3v.onrender.com${show.image}`}
                     alt={show.title}
                     className="w-full h-80 object-contain rounded-md"
                   />
