@@ -13,6 +13,7 @@ import SeatingChart from "./pages/SeatingChart";
 import Gallery from "./pages/Gallery";
 import Alliance from "./pages/Alliance";
 import MassEmailAds from "./components/MassEmailAds";
+import Sponsors from "./pages/Sponsors";
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,9 +25,9 @@ export default function App() {
     <Router>
       {/* Header */}
       <header className="bg-black text-white p-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="max-w-7xl mx-auto flex justify-center items-center">
           {/* Logo or Brand */}
-          <div className="text-xl font-bold">Liberty Theater</div>
+         
 
           {/* Hamburger Icon - Mobile */}
           <button
@@ -62,6 +63,9 @@ export default function App() {
             </Link>
             <Link to="/calendar" className="hover:underline">
               Calendar
+            </Link>
+            <Link to="/sponsors" className="hover:underline">
+              Sponsors
             </Link>
             {/* <Link to="/admin" className="hover:underline">Admin</Link> */}
           </nav>
@@ -106,6 +110,13 @@ export default function App() {
             >
               Calendar
             </Link>
+            <Link
+              to="/sponsors"
+              onClick={closeMenu}
+              className="hover:underline"
+            >
+              Sponsors
+            </Link>
           </nav>
         )}
       </header>
@@ -124,6 +135,7 @@ export default function App() {
             <Route path="/alliance" element={<Alliance />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin/mass-email" element={<MassEmailAds />} />
+            <Route path="/sponsors" element={<Sponsors/>} />
           </Routes>
         </div>
         <Footer />
