@@ -34,7 +34,7 @@ export default function Sponsors() {
     <section className=" py-16 min-h-screen">
       <div className="max-w-7xl mx-auto px-4">
         <h1 className="text-5xl font-bold text-center mb-6">Our Sponsors</h1>
-        <p className="text-center text-gray-700 mb-12 max-w-2xl mx-auto">
+        <p className="text-center text-white text-xl font-bold mb-12 max-w-2xl mx-auto">
           These amazing sponsors support our mission and community. Click to learn more!
         </p>
 
