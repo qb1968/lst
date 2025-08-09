@@ -2,73 +2,44 @@ import { Link } from "react-router-dom";
 
 export default function Sponsors() {
   const sponsors = [
-    {
-      logo: "/sponsors/1.webp",
-      website: "https://abcconstruction.com",
-    },
-    {
-      logo: "/sponsors/2.webp",
-      website: "https://libertybank.com",
-    },
-    {
-      logo: "/sponsors/3.png",
-    },
-    {
-      logo: "/sponsors/4.jpg",
-      website: "https://mainstreetdiner.com",
-    },
-    {
-      logo: "/sponsors/5.jpg",
-    },
-    {
-      logo: "/sponsors/6.jpeg",
-    },
-    {
-      logo: "/sponsors/7.png",
-    },
-    
-    // Add more sponsors here
+    { logo: "/sponsors/1.webp", website: "https://abcconstruction.com" },
+    { logo: "/sponsors/2.webp", website: "https://libertybank.com" },
+    { logo: "/sponsors/3.png" },
+    { logo: "/sponsors/4.jpg", website: "https://mainstreetdiner.com" },
+    { logo: "/sponsors/5.jpg" },
+    { logo: "/sponsors/6.jpeg" },
+    { logo: "/sponsors/7.png" },
+    { logo: "/sponsors/8.jpg" },
+    { logo: "/sponsors/9.jpg" },
+    { logo: "/sponsors/10.jpg" },
+    { logo: "/sponsors/11.jpg" },
+    { logo: "/sponsors/12.jpg" },
+    { logo: "/sponsors/13.jpg" },
+    { logo: "/sponsors/14.jpg" },
   ];
 
   return (
-    <section className=" py-16 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4">
-        <h1 className="text-5xl font-bold text-center mb-6">Our Sponsors</h1>
-        <p className="text-center text-white text-xl font-bold mb-12 max-w-2xl mx-auto">
-          These amazing sponsors support our mission and community. Click to learn more!
-        </p>
+    <section className="py-12 bg-black">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold mb-8 text-center text-white">
+          Our Sponsors
+        </h2>
 
-        {/* Grid layout */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {sponsors.map((sponsor, index) => (
+        {/* Masonry Layout */}
+        <div className="columns-1 sm:columns-2 md:columns-3 gap-4 space-y-4">
+          {sponsors.map((sponsor) => (
             <div
-              key={index}
-              className="bg-white rounded-xl overflow-hidden shadow-md flex flex-col items-center text-center hover:shadow-xl transition"
+              key={sponsor.id}
+              className="relative overflow-hidden rounded-xl shadow hover:shadow-lg transition-shadow"
             >
-              {sponsor.website ? (
-                <a
-                  href={sponsor.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full"
-                >
-                  <img
-                    src={sponsor.logo}
-                    alt={sponsor.name}
-                    className="w-full h-48 object-contain p-4"
-                  />
-                </a>
-              ) : (
-                <img
-                  src={sponsor.logo}
-                  alt={sponsor.name}
-                  className="w-full h-48 object-contain p-4"
-                />
-              )}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800">
-                  {sponsor.name}
-                </h3>
+              <img
+                src={sponsor.logo}
+                alt={sponsor.alt}
+                className="w-full rounded-xl"
+              />
+              {/* Overlay on hover */}
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-lg font-semibold opacity-100 hover:opacity-0 transition-opacity">
+                {sponsor.alt}
               </div>
             </div>
           ))}
