@@ -301,7 +301,7 @@ function Admin() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {shows.map((show) => (
           <div
-            key={show.id}
+            key={show._id}
             className="border p-4 rounded shadow text-white bg-gray-800"
           >
             <img
